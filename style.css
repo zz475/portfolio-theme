@@ -327,7 +327,17 @@ html, body {
 .site-footer {
   margin-top: auto;
 }
+.floating-ball {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 60px;
+  z-index: 10;
+  animation: floatBall 3s ease-in-out infinite;
+}
 
-body {
-  background-color: #ffe;
+@keyframes floatBall {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
 }

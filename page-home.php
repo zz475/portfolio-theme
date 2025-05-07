@@ -20,7 +20,6 @@ get_header(); ?>
   </div>
 </main>
 
-
 <section class="about">
   <div class="container">
     <h2>My Creative Core</h2>
@@ -29,9 +28,6 @@ get_header(); ?>
     </div>
   </div>
 </section>
-
-
-
 
 <section class="video-cv-section">
   <div class="container fade-in">
@@ -46,39 +42,35 @@ get_header(); ?>
   </div>
 </section>
 
-
-
+<!-- ✅ Dynamic Projects Section -->
 <section class="projects">
   <div class="container">
-  <h2>A Peek Into My Portfolio</h2>
+    <h2>A Peek Into My Portfolio</h2>
 
-<div class="project-card">
-  <a href="http://portfolio.local/wp-content/uploads/2025/04/zaras-business-card-.pdf" target="_blank">
-    <h3>Business Card</h3>
-  </a>
-</div>
+    <?php
+    $projects = new WP_Query([
+      'post_type' => 'project',
+      'posts_per_page' => -1
+    ]);
 
-<div class="project-card">
-  <a href="http://portfolio.local/wp-content/uploads/2025/04/zaras-cv-template-.pdf" target="_blank">
-    <h3>CV Template</h3>
-  </a>
-</div>
-
-
-  <div class="project-card">
-    <a href="http://portfolio.local/wp-content/uploads/2025/04/trifolder.pdf" target="_blank">Trifolder</a>
-  </div>
-
-  <div class="project-card">
-    <a href="http://portfolio.local/wp-content/uploads/2025/04/ZARA-ICE.pdf" target="_blank">Infographic</a>
-  </div>
-
-  <div class="project-card">
-    <a href="http://portfolio.local/wp-content/uploads/2025/04/poster.pdf" target="_blank">Poster</a>
-  </div>
-
-  <div class="project-card">
-    <a href="http://portfolio.local/wp-content/uploads/2025/04/LOGOS.pdf" target="_blank">Logo's</a>
+    if ($projects->have_posts()) :
+      while ($projects->have_posts()) : $projects->the_post();
+        $project_title = get_field('project_title');
+        $project_file = get_field('project_file');
+        $bg_color = get_field('background_color');
+    ?>
+      <div class="project-card" style="background-color: <?php echo esc_attr($bg_color); ?>;">
+        <a href="<?php echo esc_url($project_file['url']); ?>" target="_blank">
+          <h3><?php echo esc_html($project_title ?: get_the_title()); ?></h3>
+        </a>
+      </div>
+    <?php
+      endwhile;
+      wp_reset_postdata();
+    else :
+      echo '<p>No projects found.</p>';
+    endif;
+    ?>
   </div>
 </section>
 
@@ -86,7 +78,7 @@ get_header(); ?>
 body {
   font-family: 'Helvetica Neue', sans-serif;
   color: #333; 
-  background-color: #f9f7f3; /* soft neutral */
+  background-color: #f9f7f3;
   margin: 0;
   padding: 0;
 }
@@ -140,26 +132,18 @@ body {
   max-width: 600px;
   background: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.project-card:hover {
+  transform: translateY(-5px);
 }
 .project-card h3 {
   color: #5e4a47;
   margin-bottom: 10px;
 }
-.button {
-  background-color: #5e4a47;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 4px;
-  text-decoration: none;
-  display: inline-block;
-}
-.button:hover {
-  background-color: #3b2f2c;
-}
 </style>
 
 <?php get_footer(); ?>
-
