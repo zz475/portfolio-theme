@@ -18,3 +18,6 @@ function portfolio_enqueue_styles() {
         'redirect'      => false
     ));
 }
+
+?>
+  
